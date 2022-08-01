@@ -13,14 +13,14 @@ function createAccessToken(uid, email) {
   );
 
   return token;
-};
+}
 
 function validateToken(token) {
   const decoded = jwt.verify(token, process.env.JWT_ACCESS_SECRET);
   return decoded;
-};
+}
 
 module.exports = {
   createAccessToken,
-  validateToken
+  validateToken,
 };

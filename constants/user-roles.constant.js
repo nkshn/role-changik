@@ -6,4 +6,4 @@ const UserRoles = {
 
 module.exports = {
   UserRoles,
-}
+};
