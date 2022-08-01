@@ -1,6 +1,7 @@
 'use strict';
 
 const { Model } = require('sequelize');
+const { UserRoles } = require('../../constants/user-roles.constant');
 
 module.exports = (sequelize, DataTypes) => {
   class User extends Model {
@@ -36,6 +37,15 @@ module.exports = (sequelize, DataTypes) => {
         validate: {
           min: 8,
         },
+      },
+      role: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: UserRoles.USER,
+      },
+      bId: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
       },
     },
     {
