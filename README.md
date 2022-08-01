@@ -11,7 +11,7 @@ c. Regular user (user without subordinates)
 Each user except the Administrator must have a boss (strictly one).
 The following REST API endpoints should be exposed:
 - [x] Register user
-- [ ] Authenticate as a user
+- [x] Authenticate as a user
 - [ ] Return list of users, taking into account the following:
   - [ ] administrator should see everyone
   - [ ] boss should see herself and all subordinates (recursively)
