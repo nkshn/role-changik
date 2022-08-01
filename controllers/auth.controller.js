@@ -49,20 +49,7 @@ const singIn = async (req, res) => {
   }
 };
 
-const singOut = async (req, res) => {
-  try {
-    return res.status(200).json({
-      data: 'This is singout route!',
-    });
-  } catch (err) {
-    return res.status(500).json({
-      message: 'Internal Error 500',
-    });
-  }
-};
-
 module.exports = {
   singUp,
   singIn,
-  singOut,
 };
