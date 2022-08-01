@@ -13,7 +13,7 @@ The following REST API endpoints should be exposed:
 - [x] Register user
 - [x] Authenticate as a user
 - [ ] Return list of users, taking into account the following:
-  - [ ] administrator should see everyone
+  - [x] administrator should see everyone
   - [ ] boss should see herself and all subordinates (recursively)
-  - [ ] regular user can see only herself
+  - [x] regular user can see only herself
 - [ ] Change user's boss (only boss can do that and only for her subordinates)

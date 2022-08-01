@@ -1,14 +1,51 @@
 const { User } = require('../db/models');
 
-async function findOneByEmail(email) {
+async function findOneById(id) {
   try {
-    const user = await User.findOne({ where: { email } });
+    const user = await User.findByPk(id, {
+      raw: true,
+      attributes: { exclude: ['password'] },
+    });
 
-    if (user) {
-      return user.toJSON();
-    } else {
+    if (!user) {
       return null;
     }
+
+    return user;
+  } catch (e) {
+    throw e;
+  }
+}
+
+async function findAllUsers() {
+  try {
+    const users = await User.findAll({
+      raw: true,
+      attributes: { exclude: ['password'] },
+    });
+
+    if (!users) {
+      return null;
+    }
+
+    return users;
+  } catch (e) {
+    throw e;
+  }
+}
+
+async function findOneByEmail(email) {
+  try {
+    const user = await User.findOne({
+      where: { email },
+      raw: true,
+    });
+
+    if (!user) {
+      return null;
+    }
+
+    return user;
   } catch (e) {
     throw e;
   }
@@ -35,6 +72,8 @@ async function createOne(name, email, hashedPassword) {
 }
 
 module.exports = {
+  findOneById,
+  findAllUsers,
   findOneByEmail,
   createOne,
 };

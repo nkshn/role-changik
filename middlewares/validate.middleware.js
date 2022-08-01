@@ -85,5 +85,5 @@ const singInInputs = [
 
 module.exports = {
   singUpInputs,
-  singInInputs
+  singInInputs,
 };
