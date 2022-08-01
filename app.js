@@ -35,7 +35,7 @@ app.use('/api/view/', viewRoute);
       .authenticate()
       .then(() => {
         console.log(
-          `Connection to DataBase \"${process.env.DATABASE_NAME}\" has been established successfully!`,
+          `Connection to DataBase \"${process.env.POSTGRES_DB}\" has been established successfully!`,
         );
       })
       .catch((err) => {
