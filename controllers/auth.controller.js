@@ -7,7 +7,7 @@ const {
 } = require('../repositories/user.repository');
 
 // register route
-const singUp = async (req, res) => {
+async function singUp(req, res) {
   try {
     const { name, email, password } = req.body;
 
@@ -37,9 +37,9 @@ const singUp = async (req, res) => {
       err: err.message,
     });
   }
-};
+}
 
-const singIn = async (req, res) => {
+async function singIn(req, res) {
   try {
     const { email, password } = req.body;
 
@@ -72,7 +72,7 @@ const singIn = async (req, res) => {
       err: err.message,
     });
   }
-};
+}
 
 module.exports = {
   singUp,
