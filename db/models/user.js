@@ -43,7 +43,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: UserRoles.USER,
       },
-      bId: {
+      b_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
       },
