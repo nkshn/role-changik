@@ -12,8 +12,8 @@ Each user except the Administrator must have a boss (strictly one).
 The following REST API endpoints should be exposed:
 - [x] Register user
 - [x] Authenticate as a user
-- [ ] Return list of users, taking into account the following:
+- [x] Return list of users, taking into account the following:
   - [x] administrator should see everyone
-  - [ ] boss should see herself and all subordinates (recursively)
+  - [x] boss should see herself and all subordinates (recursively)
   - [x] regular user can see only herself
 - [ ] Change user's boss (only boss can do that and only for her subordinates)

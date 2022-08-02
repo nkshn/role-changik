@@ -1,4 +1,5 @@
-const { User } = require('../db/models');
+const { QueryTypes } = require('sequelize');
+const { sequelize, User } = require('../db/models');
 
 async function findOneById(id) {
   try {
@@ -31,6 +32,32 @@ async function findAllUsers() {
     return users;
   } catch (e) {
     throw e;
+  }
+}
+
+async function findAllBossSubordinates(id) {
+  try {
+    return await sequelize.query(
+      `WITH RECURSIVE cte AS (
+        SELECT id, b_id, name, email, role
+        FROM \"Users\"
+        WHERE id = :b_id OR b_id = :b_id
+        
+        UNION
+        
+        SELECT \"Users\".id, \"Users\".b_id, \"Users\".name, \"Users\".email, \"Users\".role
+        FROM \"Users\"
+        JOIN cte ON cte.id = \"Users\".b_id
+    )
+    SELECT id, name, email, role from cte`,
+      {
+        type: QueryTypes.SELECT,
+        replacements: { b_id: id },
+        raw: true,
+      },
+    );
+  } catch (err) {
+    throw err;
   }
 }
 
@@ -71,9 +98,13 @@ async function createOne(name, email, hashedPassword) {
   }
 }
 
+// TODO: complete this method
+async function updateOne(id, b_id) {}
+
 module.exports = {
   findOneById,
   findAllUsers,
+  findAllBossSubordinates,
   findOneByEmail,
   createOne,
 };
