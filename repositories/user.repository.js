@@ -39,17 +39,17 @@ async function findAllBossSubordinates(id) {
   try {
     return await sequelize.query(
       `WITH RECURSIVE cte AS (
-        SELECT id, b_id, name, email, role
+        SELECT id, b_id, name, role, email, \"createdAt\", \"updatedAt\"
         FROM \"Users\"
         WHERE id = :b_id OR b_id = :b_id
         
         UNION
         
-        SELECT \"Users\".id, \"Users\".b_id, \"Users\".name, \"Users\".email, \"Users\".role
+        SELECT \"Users\".id, \"Users\".b_id, \"Users\".name, \"Users\".role, \"Users\".email, \"Users\".\"createdAt\", \"Users\".\"updatedAt\"
         FROM \"Users\"
         JOIN cte ON cte.id = \"Users\".b_id
-    )
-    SELECT id, name, email, role from cte`,
+      )
+      SELECT id, name, email, role, b_id, \"createdAt\", \"updatedAt\" FROM cte`,
       {
         type: QueryTypes.SELECT,
         replacements: { b_id: id },
