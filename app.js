@@ -4,7 +4,7 @@ const cors = require('cors');
 const express = require('express');
 const bodyParser = require('body-parser');
 const { sequelize } = require('./db/models/index');
-const { authRoute, joinRoute, usersRoute, viewRoute } = require('./routes');
+const { authRoute, joinRoute, bossRoute, viewRoute } = require('./routes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -24,7 +24,7 @@ app.use(bodyParser.json());
 // routes
 app.use('/api/auth/', authRoute);
 app.use('/api/join/', joinRoute);
-app.use('/api/users/', usersRoute);
+app.use('/api/boss/', bossRoute);
 app.use('/api/view/', viewRoute);
 
 // start server

@@ -1,11 +1,11 @@
-const authRoute = require('../routes/auth.route');
-const joinRoute = require('../routes/join.route');
-const usersRoute = require('../routes/users.route');
-const viewRoute = require('../routes/view.route');
+const authRoute = require('./auth.route');
+const joinRoute = require('./join.route');
+const bossRoute = require('./boss.route');
+const viewRoute = require('./view.route');
 
 module.exports = {
   authRoute,
   joinRoute,
-  usersRoute,
+  bossRoute,
   viewRoute,
 };

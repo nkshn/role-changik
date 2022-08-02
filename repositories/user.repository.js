@@ -35,7 +35,33 @@ async function findAllUsers() {
   }
 }
 
-async function findAllBossSubordinates(id) {
+async function findAllSubordinates(id) {
+  try {
+    return await sequelize.query(
+      `WITH RECURSIVE cte AS (
+        SELECT id, b_id, name, role, email, \"createdAt\", \"updatedAt\"
+        FROM \"Users\"
+        WHERE b_id = :b_id
+        
+        UNION
+        
+        SELECT \"Users\".id, \"Users\".b_id, \"Users\".name, \"Users\".role, \"Users\".email, \"Users\".\"createdAt\", \"Users\".\"updatedAt\"
+        FROM \"Users\"
+        JOIN cte ON cte.id = \"Users\".b_id
+      )
+      SELECT id, name, email, role, b_id, \"createdAt\", \"updatedAt\" FROM cte`,
+      {
+        type: QueryTypes.SELECT,
+        replacements: { b_id: id },
+        raw: true,
+      },
+    );
+  } catch (err) {
+    throw err;
+  }
+}
+
+async function findBossAndAllSubordinates(id) {
   try {
     return await sequelize.query(
       `WITH RECURSIVE cte AS (
@@ -104,7 +130,8 @@ async function updateOne(id, b_id) {}
 module.exports = {
   findOneById,
   findAllUsers,
-  findAllBossSubordinates,
+  findAllSubordinates,
+  findBossAndAllSubordinates,
   findOneByEmail,
   createOne,
 };
