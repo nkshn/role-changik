@@ -110,6 +110,32 @@ module.exports = {
         createdAt: new Date(),
         updatedAt: new Date(),
       },
+      {
+        id: 9,
+        name: 'Max',
+        email: 'example8@gmail.com',
+        password: bcrypt.hashSync(
+          process.env.SEED_USER_TEST_PASSWORD,
+          bcrypt.genSaltSync(),
+        ),
+        role: UserRoles.BOSS,
+        b_id: 3,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
+      {
+        id: 10,
+        name: 'Katrine',
+        email: 'example9@gmail.com',
+        password: bcrypt.hashSync(
+          process.env.SEED_USER_TEST_PASSWORD,
+          bcrypt.genSaltSync(),
+        ),
+        role: UserRoles.USER,
+        b_id: 9,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+      },
     ]);
   },
 
