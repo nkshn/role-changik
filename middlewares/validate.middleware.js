@@ -1,5 +1,4 @@
 const { check, validationResult } = require('express-validator');
-
 const { formatingErrorsArray } = require('../utils/formating');
 
 const singUpInputs = [

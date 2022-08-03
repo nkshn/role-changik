@@ -1,23 +1,20 @@
 const { UserRoles } = require('../constants/user-roles.constant');
-const {
-  findOneById,
-  findAllUsers,
-  findBossAndAllSubordinates,
-} = require('../repositories/user.repository');
+const userRepository = require('../repositories/user.repository');
+const bossRepository = require('../repositories/boss.repository');
 
 async function getUserInfoByIdAndRole(id, role) {
   let data;
 
   if (role === UserRoles.ADMIN) {
-    data = await findAllUsers();
+    data = await userRepository.findAllUsers();
   }
 
   if (role === UserRoles.BOSS) {
-    data = await findBossAndAllSubordinates(id);
+    data = await bossRepository.findBossAndAllSubordinates(id);
   }
 
   if (role === UserRoles.USER) {
-    data = await findOneById(id);
+    data = await userRepository.findOneById(id);
   }
 
   return data;

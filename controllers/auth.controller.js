@@ -1,18 +1,15 @@
 const bcrypt = require('bcryptjs');
 
-const { createAccessToken } = require('../services/token.service');
-const {
-  findOneByEmail,
-  createOne,
-} = require('../repositories/user.repository');
+const tokenServise = require('../services/token.service');
+const userRepository = require('../repositories/user.repository');
 
 // register route
 async function singUp(req, res) {
   try {
     const { name, email, password } = req.body;
 
-    const gettedUser = await findOneByEmail(email);
-    if (gettedUser !== null) {
+    const gotUser = await findOneByEmail(email);
+    if (gotUser !== null) {
       return res.status(400).json({
         msg: 'User exist with such email address, try other!',
       });
@@ -20,9 +17,9 @@ async function singUp(req, res) {
 
     const hashedPassword = await bcrypt.hash(password, await bcrypt.genSalt());
 
-    const user = await createOne(name, email, hashedPassword);
+    const user = await userRepository.createOne(name, email, hashedPassword);
 
-    const token = createAccessToken(user.id, user.email);
+    const token = tokenServise.createAccessToken(user.id, user.email);
 
     return res.status(201).json({
       msg: 'User successfully signed up!',
@@ -43,7 +40,7 @@ async function singIn(req, res) {
   try {
     const { email, password } = req.body;
 
-    const user = await findOneByEmail(email);
+    const user = await userRepository.findOneByEmail(email);
     if (user === null) {
       return res.status(400).json({
         msg: 'Invalid email or password, try again!',
@@ -57,7 +54,7 @@ async function singIn(req, res) {
       });
     }
 
-    const token = createAccessToken(user.id, user.email);
+    const token = tokenServise.createAccessToken(user.id, user.email);
 
     return res.status(201).json({
       msg: 'User successfully signed in!',
