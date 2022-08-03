@@ -1,0 +1,5 @@
+const AVALIABLE_COUNT_OF_BOSSES = 1;
+
+module.exports = {
+  AVALIABLE_COUNT_OF_BOSSES,
+};

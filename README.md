@@ -1,5 +1,7 @@
 # This Role Changik App
 
+### Technical Documentation
+
 Create a tiny server app based on Node.js.
 
 The app should implement simple organization user structure management operations.
@@ -16,4 +18,5 @@ The following REST API endpoints should be exposed:
   - [x] administrator should see everyone
   - [x] boss should see herself and all subordinates (recursively)
   - [x] regular user can see only herself
-- [ ] Change user's boss (only boss can do that and only for her subordinates)
+- [x] Change user's boss (only boss can do that and only for her subordinates)
+
