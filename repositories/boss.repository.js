@@ -137,7 +137,7 @@ async function changeUserBoss(chosenUserId, newBossId) {
       );
     }
 
-    await selecteUser.save();
+    await selecteUser.save({ transaction: t });
     await t.commit();
   } catch (err) {
     await t.rollback();
