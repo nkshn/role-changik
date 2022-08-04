@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
-
 const tokenServise = require('../services/token.service');
 const userRepository = require('../repositories/user.repository');
+const { ResponseCodes } = require('../constants/response-codes');
 
 // register route
 async function singUp(req, res) {
@@ -10,7 +10,7 @@ async function singUp(req, res) {
 
     const gotUser = await findOneByEmail(email);
     if (gotUser !== null) {
-      return res.status(400).json({
+      return res.status(ResponseCodes.ERROR.INVALID_DATA).json({
         msg: 'User exist with such email address, try other!',
       });
     }
@@ -21,7 +21,7 @@ async function singUp(req, res) {
 
     const token = tokenServise.createAccessToken(user.id, user.email);
 
-    return res.status(201).json({
+    return res.status(ResponseCodes.SUCCESS.USER_CREATED).json({
       msg: 'User successfully signed up!',
       id: user.id,
       name: user.name,
@@ -29,9 +29,9 @@ async function singUp(req, res) {
       token: token,
     });
   } catch (err) {
-    return res.status(500).json({
-      message: 'Internal Error 500, try again later!',
-      err: err.message,
+    console.error('Error occurred at /auth/signup, err: ', err);
+    return res.status(ResponseCodes.SERVER.INTERNAL_ERROR).json({
+      message: 'Internal Server Error, try again!',
     });
   }
 }
@@ -42,21 +42,21 @@ async function singIn(req, res) {
 
     const user = await userRepository.findOneByEmail(email);
     if (user === null) {
-      return res.status(400).json({
+      return res.status(ResponseCodes.ERROR.INVALID_DATA).json({
         msg: 'Invalid email or password, try again!',
       });
     }
 
     const comparedPass = await bcrypt.compare(password, user.password);
     if (!comparedPass) {
-      return res.status(400).json({
+      return res.status(ResponseCodes.ERROR.INVALID_DATA).json({
         msg: 'Invalid email or password, try again!',
       });
     }
 
     const token = tokenServise.createAccessToken(user.id, user.email);
 
-    return res.status(201).json({
+    return res.status(ResponseCodes.SUCCESS.OK).json({
       msg: 'User successfully signed in!',
       id: user.id,
       name: user.name,
@@ -64,9 +64,9 @@ async function singIn(req, res) {
       token: token,
     });
   } catch (err) {
-    return res.status(500).json({
-      message: 'Internal Error 500',
-      err: err.message,
+    console.error('Error occurred at /auth/signin, err: ', err);
+    return res.status(ResponseCodes.SERVER.INTERNAL_ERROR).json({
+      message: 'Internal Server Error, try again!',
     });
   }
 }

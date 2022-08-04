@@ -1,3 +1,4 @@
+const { ResponseCodes } = require('../constants/response-codes');
 const { validateToken } = require('../services/token.service');
 
 function validatingAuthorization(req, res, next) {
@@ -9,7 +10,7 @@ function validatingAuthorization(req, res, next) {
       authHeader === null ||
       authHeader.length === 0;
     if (isHeaderNotSpecified) {
-      return res.status(401).json({
+      return res.status(ResponseCodes.ERROR.NOT_AUTHORIZED).json({
         msg: 'You are not authorized to perform this action, please sing in and try again!',
       });
     }
@@ -18,7 +19,7 @@ function validatingAuthorization(req, res, next) {
 
     // checking if token exist
     if (!token) {
-      return res.status(401).json({
+      return res.status(ResponseCodes.ERROR.NOT_AUTHORIZED).json({
         msg: 'You are not authorized to perform this action, please sing in and try again!',
       });
     }
@@ -29,7 +30,7 @@ function validatingAuthorization(req, res, next) {
     next();
   } catch (err) {
     // if token is invalid
-    return res.status(401).json({
+    return res.status(ResponseCodes.ERROR.NOT_AUTHORIZED).json({
       msg: 'You are not authorized to perform this action, please sing in and try again!',
     });
   }

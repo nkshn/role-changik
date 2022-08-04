@@ -2,6 +2,7 @@ const { AVALIABLE_COUNT_OF_BOSSES } = require('../constants/boss.constants');
 const userRepository = require('../repositories/user.repository');
 const bossRepository = require('../repositories/boss.repository');
 const bossService = require('../services/boss.service');
+const { ResponseCodes } = require('../constants/response-codes');
 
 async function getAvailableBosses(req, res) {
   try {
@@ -9,26 +10,26 @@ async function getAvailableBosses(req, res) {
 
     const user = await userRepository.findOneById(id);
     if (user === null) {
-      return res.status(404).json({
+      return res.status(ResponseCodes.ERROR.NOT_FOUND).json({
         msg: 'No such user, try again!',
       });
     }
 
     const availableBosses = await bossRepository.checkForAvaliableBosses(id);
     if (availableBosses.length === 0) {
-      return res.status(404).json({
+      return res.status(ResponseCodes.ERROR.NOT_FOUND).json({
         msg: "You don't have subordinated bosses!",
       });
     }
 
-    return res.status(200).json({
+    return res.status(ResponseCodes.SUCCESS.OK).json({
       msg: 'Successfully got available bosses!',
       data: availableBosses,
     });
   } catch (err) {
-    return res.status(500).json({
-      message: 'Internal Error 500',
-      err: err.message,
+    console.error('Error occurred at /boss/available, err: ', err);
+    return res.status(ResponseCodes.SERVER.INTERNAL_ERROR).json({
+      message: 'Internal Server Error, try again!',
     });
   }
 }
@@ -43,7 +44,7 @@ async function changeUserBoss(req, res) {
      */
     const user = await userRepository.findOneById(id);
     if (user === null) {
-      return res.status(404).json({
+      return res.status(ResponseCodes.ERROR.NOT_FOUND).json({
         msg: 'No such user, try again!',
       });
     }
@@ -53,7 +54,7 @@ async function changeUserBoss(req, res) {
      */
     const availableBosses = await bossRepository.checkForAvaliableBosses(id);
     if (availableBosses.length === 0) {
-      return res.status(404).json({
+      return res.status(ResponseCodes.ERROR.NOT_FOUND).json({
         msg: "You don't have subordinated bosses!",
       });
     }
@@ -64,7 +65,7 @@ async function changeUserBoss(req, res) {
      * so i think, than u cannot change boss, because u have only one boss
      */
     if (availableBosses.length <= AVALIABLE_COUNT_OF_BOSSES) {
-      return res.status(404).json({
+      return res.status(ResponseCodes.ERROR.NOT_FOUND).json({
         msg: `You only have one subordinated boss, so, unfortunately, this action is forbidden for you, you need more than ${AVALIABLE_COUNT_OF_BOSSES} subordinated bosses!`,
       });
     }
@@ -75,7 +76,7 @@ async function changeUserBoss(req, res) {
     const isBossAtAvaliableBosses =
       bossService.checkIfBossExistAtAvailableBosses(newBossId, availableBosses);
     if (!isBossAtAvaliableBosses) {
-      return res.status(404).json({
+      return res.status(ResponseCodes.ERROR.NOT_FOUND).json({
         msg: "You didn't have such boss at your subordinates, try again!",
       });
     }
@@ -85,7 +86,7 @@ async function changeUserBoss(req, res) {
      */
     const selectedUser = await userRepository.findOneById(userId);
     if (selectedUser === null) {
-      return res.status(404).json({
+      return res.status(ResponseCodes.ERROR.NOT_FOUND).json({
         msg: 'User you selected - not exist, choose other user and try again!',
       });
     }
@@ -99,7 +100,7 @@ async function changeUserBoss(req, res) {
       availableBosses,
     );
     if (!isUserAtBosses) {
-      return res.status(404).json({
+      return res.status(ResponseCodes.ERROR.NOT_FOUND).json({
         msg: `No such user at your subordinates bosses, choose other user and try again!`,
       });
     }
@@ -111,14 +112,14 @@ async function changeUserBoss(req, res) {
     const updatedListOfAvailableBosses =
       await bossRepository.findBossAndAllSubordinates(id);
 
-    return res.status(200).json({
+    return res.status(ResponseCodes.SUCCESS.OK).json({
       msg: "Successfully changed user's boss!",
       data: updatedListOfAvailableBosses,
     });
   } catch (err) {
-    return res.status(500).json({
-      message: 'Internal Error 500',
-      err: err.message,
+    console.error('Error occurred at /boss/change, err: ', err);
+    return res.status(ResponseCodes.SERVER.INTERNAL_ERROR).json({
+      message: 'Internal Server Error, try again!',
     });
   }
 }

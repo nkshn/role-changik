@@ -1,4 +1,5 @@
 const { check, validationResult } = require('express-validator');
+const { ResponseCodes } = require('../constants/response-codes');
 const { formatingErrorsArray } = require('../utils/formating');
 
 const singUpInputs = [
@@ -35,7 +36,7 @@ const singUpInputs = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({
+      return res.status(ResponseCodes.ERROR.INVALID_DATA).json({
         msg: 'Incorrect inputs, please try again!',
         errors: formatingErrorsArray(errors.array()),
       });
@@ -73,7 +74,7 @@ const singInInputs = [
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      return res.status(400).json({
+      return res.status(ResponseCodes.ERROR.INVALID_DATA).json({
         msg: 'Incorrect inputs, please try again!',
         errors: formatingErrorsArray(errors.array()),
       });
